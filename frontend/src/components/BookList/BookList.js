@@ -1,7 +1,7 @@
 import { BsBookmarkStar, BsBookmarkStarFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteBook, toggleFavorite } from '../../redux/books/actionCreators';
-import { selecTitleFilter, selecAuthorFilter, selecOnlyFavoriteFilter } from '../../redux/slices/filterSlice';
+import { selecAuthorFilter, selecOnlyFavoriteFilter, selecTitleFilter } from '../../redux/slices/filterSlice';
 import './BookList.css';
 
 const BookList = () => {
@@ -26,6 +26,22 @@ const BookList = () => {
         return matchesTitle && matchesAuthor && matchesFavorite;
     });
 
+    const highlightMatch = (text, filter) => {
+        if (!filter) return text;
+
+        const regex = new RegExp(`(${filter})`, 'gi');
+        return text.split(regex).map((substring, index) => {
+            if (substring.toLowerCase() === filter.toLowerCase()) {
+                return (
+                    <span key={index} className="highlight">
+                        {substring}
+                    </span>
+                );
+            }
+            return substring;
+        });
+    };
+
     return (
         <div className="app-block book-list">
             <h2>Book List</h2>
@@ -36,7 +52,7 @@ const BookList = () => {
                     {filteredBooks.map((book, index) => (
                         <li key={book.id}>
                             <div className="book-info">
-                                {++index}. {book.title} by <strong>{book.author}</strong>
+                                {++index}. {highlightMatch(book.title, titleFilter)} by <strong>{highlightMatch(book.author, authorFilter)}</strong>
                             </div>
                             <div className="book-actions">
                                 <span onClick={() => handleToggleFavorite(book.id)}>
