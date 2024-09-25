@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import booksData from '../../data/books.json';
 import { addBook, fetchBook } from '../../redux/slices/booksSlice';
 import createBookWithId from '../../utils/createBookWithId';
+import { setError } from '../../redux/slices/errorSlice';
 import './BookForm.css';
 
 const BookForm = () => {
@@ -12,11 +13,13 @@ const BookForm = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+
         if (title && author) {
             dispatch(addBook(createBookWithId({ title, author }, 'manual')));
-
             setTitle('');
             setAuthor('');
+        } else {
+            dispatch(setError('Please enter both title and author.'));
         }
     };
 
