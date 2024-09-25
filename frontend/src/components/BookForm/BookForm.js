@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import booksData from '../../data/books.json';
 import { addBook, fetchBook } from '../../redux/slices/booksSlice';
-import createBookWithId from '../../utils/createBookWithId';
 import { setError } from '../../redux/slices/errorSlice';
+import createBookWithId from '../../utils/createBookWithId';
 import './BookForm.css';
 
 const BookForm = () => {
@@ -31,7 +31,7 @@ const BookForm = () => {
     };
 
     const handleAddRandomBookViaAPI = () => {
-        dispatch(fetchBook());
+        dispatch(fetchBook('http://localhost:4000/random-book'));
     };
 
     return (
